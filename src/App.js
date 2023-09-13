@@ -4,9 +4,9 @@ import './App.css';
 import shuffle from './utilities/shuffle';
 import Card from "./components/Card";
 import JSConfetti from 'js-confetti'
+import Header from './components/Header';
 
 const jsConfetti = new JSConfetti()
-
 
 function App() {
   const [cards, setCards] = useState(shuffle)
@@ -28,6 +28,12 @@ function App() {
     setDisabled(false)
   }
 
+  const handleNewGame = () => {
+    jsConfetti.addConfetti({ emojis: ['💩'], })
+    handleTurn()
+    setCards(shuffle)
+  }
+
   useEffect(() => {
     let pickTimer
     if (pickOne && pickTwo) {
@@ -41,6 +47,8 @@ function App() {
             }
           })
         })
+        jsConfetti.clearCanvas()
+        jsConfetti.addConfetti({ emojis: ['🍖'], })
         handleTurn();
       } else {
         setDisabled(true)
@@ -58,6 +66,7 @@ function App() {
   useEffect(() => {
     const checkWin = cards.filter((card) => !card.matched)
     if (cards.length && checkWin.length < 1) {
+      jsConfetti.clearCanvas()
       jsConfetti.addConfetti()
       setWins(wins + 1)
       handleTurn()
@@ -68,6 +77,8 @@ function App() {
 
   return (
     <>
+      <Header wins={wins} handleNewGame={handleNewGame} />
+
       <div className='grid'>
         {cards.map((card) => {
           return <Card
