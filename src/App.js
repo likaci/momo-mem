@@ -3,6 +3,10 @@ import logo from './logo.svg';
 import './App.css';
 import shuffle from './utilities/shuffle';
 import Card from "./components/Card";
+import JSConfetti from 'js-confetti'
+
+const jsConfetti = new JSConfetti()
+
 
 function App() {
   const [cards, setCards] = useState(shuffle)
@@ -54,6 +58,7 @@ function App() {
   useEffect(() => {
     const checkWin = cards.filter((card) => !card.matched)
     if (cards.length && checkWin.length < 1) {
+      jsConfetti.addConfetti()
       setWins(wins + 1)
       handleTurn()
       setCards(shuffle)
@@ -69,7 +74,7 @@ function App() {
             key={card.id}
             image={card.image}
             selected={card === pickOne || card === pickTwo || card.matched}
-            onClick={() => {console.log("click");handleClick(card)}}
+            onClick={() => { console.log("click"); handleClick(card) }}
           />
         })}
       </div>
